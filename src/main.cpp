@@ -1,47 +1,93 @@
 #include <Arduino.h>
 
-// Configuring pins
-const int pwma = 14;
-const int ain2 = 27;
-const int ain1 = 26;
+void set_pwm(int motor, int pwm);
 
-const int pwmb = 25;
-const int bin2 = 33;
-const int bin1 = 32;
+void set_direction(int motor, int sign);
 
-const int stby = 13;
+const int pin_pwm_a = 14;
+const int switch_a_1 = 26;
+const int switch_a_2 = 27;
+
+const int pin_pwm_b = 25;
+const int switch_b_1 = 32;
+const int switch_b_2 = 33;
+
+const int standby = 13;
+
+const int pwm_a = 0;
+const int pwm_b = 1;
+
+const int PWM_FREQUENCY = 1000;
+const int PWM_RESOLUTION = 10;
+const int PWM_MAX = (int) ((pow(2, PWM_RESOLUTION) - 1));
+
+const int BAUD_RATE = 115200;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(BAUD_RATE);
 
-  // Configuring pins as output
-  pinMode(pwma, OUTPUT);
-  pinMode(ain1, OUTPUT);
-  pinMode(ain2, OUTPUT);
-  pinMode(pwmb, OUTPUT);
-  pinMode(bin1, OUTPUT);
-  pinMode(bin2, OUTPUT);
-  pinMode(stby, OUTPUT);
+  ledcSetup(pwm_a, PWM_FREQUENCY, PWM_RESOLUTION);
+  ledcSetup(pwm_b, PWM_FREQUENCY, PWM_RESOLUTION);
 
-  digitalWrite(ain1, HIGH);
-  digitalWrite(ain2, LOW);
-  
-  digitalWrite(bin1, HIGH);
-  digitalWrite(bin2, LOW);
-  
-  digitalWrite(stby, HIGH);  
+  ledcAttachPin(pin_pwm_a, pwm_a);
+  ledcAttachPin(pin_pwm_b, pwm_b);
+
+  pinMode(switch_a_1, OUTPUT);
+  pinMode(switch_a_2, OUTPUT);
+
+  pinMode(switch_b_1, OUTPUT);
+  pinMode(switch_b_2, OUTPUT);
+
+  pinMode(standby, OUTPUT);
+  digitalWrite(standby, HIGH);
+
+  set_direction(0, 1);
+  set_direction(1, 1);
+
+  set_pwm(0, 500);
+  set_pwm(1, 500);
 }
 
 void loop() {
-  digitalWrite(pwma, HIGH);
-  digitalWrite(pwmb, HIGH);
+}
 
-  /*
-  delay(2000);
+void set_pwm(int motor, int pwm)
+{
+  if (motor != 0) motor = 1;
 
-  digitalWrite(pwma, LOW);
-  digitalWrite(pwmb, LOW);
+  if (pwm > PWM_MAX) ledcWrite(motor, PWM_MAX);
+  else if (pwm < 0) ledcWrite(motor, 0);
+  else ledcWrite(motor, pwm);
+}
 
-  delay(2000);
-  */
+void set_direction(int motor, int sign)
+{
+  int motor_pin_1;
+  int motor_pin_2;
+  if (motor == 0)
+  {
+    motor_pin_1 = switch_a_1;
+    motor_pin_2 = switch_a_2;
+  }
+  else
+  {
+    motor_pin_1 = switch_b_1;
+    motor_pin_2 = switch_b_2;
+  }
+
+  if (sign > 0)
+  {
+    digitalWrite(motor_pin_1, HIGH);
+    digitalWrite(motor_pin_2, LOW);
+  }
+  else if (sign < 0)
+  {
+    digitalWrite(motor_pin_1, LOW);
+    digitalWrite(motor_pin_2, HIGH);
+  }
+  else
+  {
+    digitalWrite(motor_pin_1, LOW);
+    digitalWrite(motor_pin_2, LOW);
+  }
 }
