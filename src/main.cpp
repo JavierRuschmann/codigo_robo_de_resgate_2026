@@ -14,6 +14,9 @@ const int switch_b_2 = 33;
 
 const int standby = 13;
 
+const int ir_sensor_vin = 4;
+const int ir_sensor_out = 13;
+
 const int pwm_a = 0;
 const int pwm_b = 1;
 
@@ -32,6 +35,10 @@ void setup() {
   ledcAttachPin(pin_pwm_a, pwm_a);
   ledcAttachPin(pin_pwm_b, pwm_b);
 
+  pinMode(ir_sensor_vin, OUTPUT);
+  pinMode(ir_sensor_out, INPUT);
+  digitalWrite(ir_sensor_vin, HIGH);
+
   pinMode(switch_a_1, OUTPUT);
   pinMode(switch_a_2, OUTPUT);
 
@@ -49,6 +56,8 @@ void setup() {
 }
 
 void loop() {
+  Serial.println(analogRead(ir_sensor_out));
+  delay(500);
 }
 
 void set_pwm(int motor, int pwm)
