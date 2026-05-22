@@ -14,8 +14,8 @@ const int switch_b_2 = 33;
 
 const int standby = 13;
 
-const int ir_sensor_vin = 4;
-const int ir_sensor_out = 13;
+const int ir_sensor_vin = 13;
+const int ir_sensor_out = 4;
 
 const int pwm_a = 0;
 const int pwm_b = 1;
