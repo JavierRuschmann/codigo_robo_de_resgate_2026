@@ -4,18 +4,17 @@ void set_pwm(int motor, int pwm);
 
 void set_direction(int motor, int sign);
 
-const int pin_pwm_a = 14;
-const int switch_a_1 = 26;
-const int switch_a_2 = 27;
+const int pin_pwm_a = 4;
+const int switch_a_1 = 16;
+const int switch_a_2 = 17;
 
-const int pin_pwm_b = 25;
-const int switch_b_1 = 32;
-const int switch_b_2 = 33;
-
-const int standby = 13;
+const int pin_pwm_b = 21;
+const int switch_b_1 = 18;
+const int switch_b_2 = 19;
 
 const int ir_sensor_vin = 13;
-const int ir_sensor_out = 4;
+const int IR_SENSOR_PINS = 6;
+const int ir_sensor_pin[IR_SENSOR_PINS] = {14, 27, 26, 25, 33, 32};
 
 const int pwm_a = 0;
 const int pwm_b = 1;
@@ -36,17 +35,17 @@ void setup() {
   ledcAttachPin(pin_pwm_b, pwm_b);
 
   pinMode(ir_sensor_vin, OUTPUT);
-  pinMode(ir_sensor_out, INPUT);
   digitalWrite(ir_sensor_vin, HIGH);
+  for (int i = 0; i < IR_SENSOR_PINS; i++)
+  {
+    pinMode(ir_sensor_pin[i], INPUT);
+  }
 
   pinMode(switch_a_1, OUTPUT);
   pinMode(switch_a_2, OUTPUT);
 
   pinMode(switch_b_1, OUTPUT);
   pinMode(switch_b_2, OUTPUT);
-
-  pinMode(standby, OUTPUT);
-  digitalWrite(standby, HIGH);
 
   set_direction(0, 1);
   set_direction(1, 1);
@@ -56,7 +55,14 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(analogRead(ir_sensor_out));
+  for (int i = 0; i < IR_SENSOR_PINS; i++)
+  {
+    Serial.print(analogRead(ir_sensor_pin[i]));
+    Serial.print(" ");
+  }
+
+  Serial.println();
+  
   delay(500);
 }
 
