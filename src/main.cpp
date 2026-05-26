@@ -13,8 +13,8 @@ const int switch_b_1 = 18;
 const int switch_b_2 = 19;
 
 const int ir_sensor_vin = 13;
-const int IR_SENSOR_PINS = 6;
-const int ir_sensor_pin[IR_SENSOR_PINS] = {14, 27, 26, 25, 33, 32};
+const int IR_SENSOR_PINS = 5;
+const int ir_sensor_pin[] = {14, 27, 26, 25, 33, 32};
 
 const int pwm_a = 0;
 const int pwm_b = 1;
@@ -63,7 +63,7 @@ void loop() {
 
   Serial.println();
   
-  delay(500);
+  delay(5);
 }
 
 void set_pwm(int motor, int pwm)
