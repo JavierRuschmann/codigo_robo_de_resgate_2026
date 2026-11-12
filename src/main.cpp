@@ -13,7 +13,7 @@ const int switch_b_1 = 18;
 const int switch_b_2 = 19;
 
 const int ir_sensor_vin = 13;
-const int IR_SENSOR_PINS = 5;
+const int IR_SENSOR_PINS = 8;
 const int ir_sensor_pin[] = {14, 27, 26, 25, 33, 32};
 
 const int pwm_a = 0;
